@@ -21,7 +21,7 @@ namespace AssetStudio
                 {
                     var assembly = AssemblyDefinition.ReadAssembly(file, readerParameters);
                     resolver.Register(assembly);
-                    moduleDic.Add(assembly.MainModule.Name, assembly.MainModule);
+                    moduleDic.Add(assembly.MainModule.Name.Replace(".dll",""), assembly.MainModule);
                 }
                 catch
                 {
@@ -36,7 +36,7 @@ namespace AssetStudio
             if (moduleDic.TryGetValue(assemblyName, out var module))
             {
                 var typeDef = module.GetType(fullName);
-                if (typeDef == null && assemblyName == "UnityEngine.dll")
+                if (typeDef == null && (assemblyName == "UnityEngine" || assemblyName == "UnityEngine.dll"))
                 {
                     foreach (var pair in moduleDic)
                     {
